@@ -33,6 +33,9 @@ npx expo start
 
 You can use Expo Go app on the Android or IOS physical device or you can run the app on the emulator/simulator
 
+Note: You have to create your own api key on 'https://www.weatherapi.com/'
+and insert it inside constants/index.js for the App to fetch the response
+
 ```
 
 ## Technologies
