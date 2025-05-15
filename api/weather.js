@@ -5,18 +5,29 @@ const forecastEndpoint = params => `https://api.weatherapi.com/v1/forecast.json?
 const locationsEndpoint = params => `https://api.weatherapi.com/v1/search.json?key=${apiKey}&q=${params.cityName}`
 
 const apiCall = async (endpoint) => {
-    const options = {
-        method: 'GET',
-        url: endpoint,
+  const options = {
+    method: 'GET',
+    url: endpoint,
+  };
+
+  try {
+    const response = await axios.request(options);
+
+    if (response.status >= 200 && response.status < 300) {
+      return response.data;
+    } else {
+      throw new Error(`API request failed with status code ${response.status}`);
     }
-    try {
-        const response = await axios.request(options);
-        return response.data;
-    } catch (err) {
-        console.log('Error in apiCall: ', err);
-        return null;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.error('Axios error:', error.message);
+      throw error;
+    } else {
+      console.error('Unknown error:', error.message);
+      throw error;
     }
-}
+  }
+};
 
 export const fetchWeatherForecast = params => {
     return apiCall(forecastEndpoint(params));
